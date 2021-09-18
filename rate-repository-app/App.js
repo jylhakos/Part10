@@ -1,6 +1,12 @@
+// 10.1
+
 // $ npm install --global expo-cli
 
 // $ expo init rate-repository-app --template expo-template-blank@sdk-40
+
+// 10.2
+
+// $ npm install --save-dev eslint @babel/eslint-parser eslint-plugin-react
 
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
