@@ -9,13 +9,16 @@ import { Text, StyleSheet, View } from 'react-native';
 // 10.3
 import RepositoryList from './RepositoryList';
 
+// 10.4
+import AppBar from './AppBar';
+
 const styles = StyleSheet.create({
 	container: {
-		marginTop: Constants.statusBarHeight,
+		//marginTop: Constants.statusBarHeight,
 		flexGrow: 1,
 		flexShrink: 1,
 	},
-	titleText: {
+	title: {
 		padding: 5,
 		fontSize: 18,
 		fontWeight: 'bold',
@@ -29,7 +32,8 @@ const Main = () => {
 
 	return (
 		<View style={styles.container}>
-			<Text style={styles.titleText}>Rate Repository Application</Text>
+			<AppBar />
+			<Text style={styles.title}>Rate Repository Application</Text>
 			<RepositoryList />
 		</View>
 	);
