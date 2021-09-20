@@ -4,8 +4,9 @@
 
 import React from 'react';
 
-import { Text, FlatList, View, StyleSheet, Image, Segment } from 'react-native';
+import { Text, FlatList, View, StyleSheet, Image } from 'react-native';
 
+// 10.5
 const styles = StyleSheet.create({separator: {
 	height: 10,
 	},
