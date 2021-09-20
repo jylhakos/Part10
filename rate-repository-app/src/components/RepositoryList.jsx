@@ -77,7 +77,8 @@ const RepositoryList = () => {
 						forksCount={item.forksCount}
 						stargazersCount={item.stargazersCount}
 						ratingAverage={item.ratingAverage}
-						reviewCount={item.reviewCount}/>
+						reviewCount={item.reviewCount}
+            ownerAvatarUrl={item.ownerAvatarUrl}/>
 	);
 
 	return (

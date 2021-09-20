@@ -17,6 +17,7 @@ const styles = StyleSheet.create({
 		//marginTop: Constants.statusBarHeight,
 		flexGrow: 1,
 		flexShrink: 1,
+		backgroundColor : '#e1e4e8'
 	},
 	title: {
 		padding: 5,
@@ -26,6 +27,8 @@ const styles = StyleSheet.create({
 	}
 });
 
+// <Text style={styles.title}>Rate Repository Application</Text>
+
 const Main = () => {
 
 	console.log('Main')
@@ -33,7 +36,7 @@ const Main = () => {
 	return (
 		<View style={styles.container}>
 			<AppBar />
-			<Text style={styles.title}>Rate Repository Application</Text>
+			
 			<RepositoryList />
 		</View>
 	);
