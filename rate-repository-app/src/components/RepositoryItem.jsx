@@ -42,9 +42,6 @@ const styles = StyleSheet.create({
 		backgroundColor : '#0366d6',
 		alignSelf: 'flex-start',
 		
-	},
-	flexContainer: {
-		flexDirection: 'row',
 	}
 });
 
