@@ -13,13 +13,15 @@ const styles = StyleSheet.create({
 		paddingTop: Constants.statusBarHeight,
 		paddingBottom: Constants.statusBarHeight/2,
 		flexDirection: 'row',
+		fontFamily: 'Roboto',
 		fontWeight: 'bold',
 		fontSize: 20,
 		color: '#FFFFFF',
 		backgroundColor: '#24292e'
     },
     bar: {
-		fontWeight: 'bold',
+		//fontWeight: 'bold',
+		fontFamily: 'Roboto',
 		fontSize: 20,
 		color: '#FFFFFF'
     },
@@ -40,7 +42,7 @@ const AppBar = () => {
 				
 				<View style={{paddingTop: 10, paddingBottom: 10, paddingRight: 15 }}>
 					<Link to="/sigin">
-						<Text style={styles.bar}>Sign In</Text>
+						<Text fontWeight="bold" fontSize="subheading" style={styles.bar}>Sign In</Text>
 					</Link>
 				</View>
 			</ScrollView>

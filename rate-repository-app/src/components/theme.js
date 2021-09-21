@@ -1,5 +1,6 @@
 // theme
 
+// 10.10
 const theme = {
   colors: {
     textPrimary: '#24292e',
@@ -8,10 +9,11 @@ const theme = {
   },
   fontSizes: {
     body: 14,
-    subheading: 16,
+    subheading: 20,
   },
   fonts: {
-    main: 'System',
+    //main: 'System',
+    main: 'Roboto',
   },
   fontWeights: {
     normal: '400',

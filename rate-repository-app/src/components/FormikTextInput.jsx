@@ -17,6 +17,7 @@ const styles = StyleSheet.create({
 		borderRadius: 4,
 		padding: 15,
 		fontSize: 18,
+		fontFamily: 'Roboto',
 		fontWeight: 'bold',
 		borderColor: 'lightgray',
 		backgroundColor: 'white'

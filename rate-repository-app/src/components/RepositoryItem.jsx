@@ -16,18 +16,21 @@ const styles = StyleSheet.create({
 	item: {
 		padding: 5,
 		fontSize: 16,
-		fontWeight: 'bold',
+		fontFamily: 'Roboto',
+		//fontWeight: 'bold',
 		color: 'black'
 	},
 	lightitem: {
 		padding: 5,
 		fontSize: 16,
+		fontFamily: 'Roboto',
 		fontWeight: 'bold',
 		color: 'lightgrey'
 	},
 	fixitem: {
 		padding: 5,
 		fontSize: 16,
+		fontFamily: 'Roboto',
 		fontWeight: 'bold',
 		color: 'black',
 		alignSelf: 'center',
@@ -38,6 +41,7 @@ const styles = StyleSheet.create({
 	},
 	textbox: {
 		padding: 5,
+		fontFamily: 'Roboto',
 		fontSize: 16,
 		fontWeight: 'bold',
 		color: 'white',
@@ -86,7 +90,7 @@ const RepositoryItem = ( props ) => {
 					<Image style={styles.avatar} source={{uri: ownerAvatarUrl}}/>
 				</View>
 				<View style={{flex: 2}, {alignSelf: 'baseline'}}>
-					<Text style={styles.item}>{fullName}</Text>
+					<Text fontWeight="bold" style={styles.item}>{fullName}</Text>
 
 					<Text style={styles.lightitem}>{description}</Text>
 			
