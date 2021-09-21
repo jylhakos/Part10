@@ -6,8 +6,17 @@ import Constants from 'expo-constants';
 
 import { Text, StyleSheet, View } from 'react-native';
 
+// 10.6
+// $ npm install react-router-native
+
+// $ npm install @expo/webpack-config --save-dev
+
+import { Route, Switch, Redirect } from 'react-router-native';
+
 // 10.3
 import RepositoryList from './RepositoryList';
+
+import SignIn from './SignIn';
 
 // 10.4
 import AppBar from './AppBar';
@@ -29,15 +38,24 @@ const styles = StyleSheet.create({
 
 // <Text style={styles.title}>Rate Repository Application</Text>
 
+// 10.6
 const Main = () => {
-
-	console.log('Main')
 
 	return (
 		<View style={styles.container}>
 			<AppBar />
-			
-			<RepositoryList />
+			<Switch>
+				<Route path="/sigin">
+					<SignIn />
+				</Route>
+				<Route path="/repositories">
+					<RepositoryList />
+				</Route>
+				<Route path="/" exact>
+        			<RepositoryList />
+        		</Route>
+        		<Redirect to="/" />
+        	</Switch>
 		</View>
 	);
 };

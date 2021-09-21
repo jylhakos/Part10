@@ -92,7 +92,7 @@ const RepositoryItem = ( props ) => {
 				</View>
 			</View>
 
-			<View style={{flex: 1, flexDirection: 'row'}}>
+			<View style={{flex: 1, flexDirection: 'row', paddingTop: 25}}>
 				<View style={{flex: 1}, {alignSelf: 'baseline'}}>
 					<Text style={styles.fixitem} >{stars}</Text>
 					<Text style={styles.lightitem} >Stars</Text>
