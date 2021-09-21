@@ -4,7 +4,7 @@ import React from 'react';
 
 import { Link } from 'react-router-native';
 
-import { View, StyleSheet, Text, Pressable } from 'react-native';
+import { View, StyleSheet, Text, Pressable, ScrollView } from 'react-native';
 
 import Constants from 'expo-constants';
 
@@ -26,13 +26,14 @@ const styles = StyleSheet.create({
     },
 });
 
+// 10.7
 const AppBar = () => {
 
 	return  (
-
+		
 		<View style={styles.container}>
-
-			<View style={{paddingRight: 15 }}>
+			<ScrollView horizontal>
+			<View style={{paddingLeft: 5, paddingRight: 15 }}>
 				<Link to="/repositories">
 					<Text style={styles.bar}>Repositories</Text>
 				</Link>
@@ -43,7 +44,15 @@ const AppBar = () => {
 					<Text style={styles.bar}>Sign In</Text>
 				</Link>
 			</View>
+			<View style={{paddingRight: 150 }}>
+				<Text style={styles.bar}>Tab</Text>
+			</View>
+			<View style={{paddingRight: 200 }}>
+				<Text style={styles.bar}>Tab</Text>
+			</View>
+			</ScrollView>
 		</View>
+		
   );
 };
 
