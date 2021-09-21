@@ -4,7 +4,7 @@ import React from 'react';
 
 import Constants from 'expo-constants';
 
-import { Text, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 // 10.6
 // $ npm install react-router-native
@@ -12,6 +12,8 @@ import { Text, StyleSheet, View } from 'react-native';
 // $ npm install @expo/webpack-config --save-dev
 
 import { Route, Switch, Redirect } from 'react-router-native';
+
+// import Text from './Text';
 
 // 10.3
 import RepositoryList from './RepositoryList';

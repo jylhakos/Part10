@@ -3,14 +3,21 @@
 // 10.6
 import React from 'react';
 
-import { View, StyleSheet, Text, Pressable } from 'react-native';
+import { View, StyleSheet, Pressable } from 'react-native';
 
 // 10.8
-// $ npm install formik
+// $ npm install --save-dev formik
 
 import { Formik, useField } from 'formik';
 
 import FormikTextInput from './FormikTextInput';
+
+// 10.9
+// $ npm install --save-dev yup
+
+import * as yup from 'yup';
+
+import Text from './Text';
 
 const initialValues = {
   user: '',
@@ -49,6 +56,18 @@ function Button(props) {
   );
 }
 
+// 10.9
+const validationSchema = yup.object().shape({
+  user: yup
+    .string()
+    .min(1, 'Username is too short')
+    .required('Username is required'),
+  password: yup
+    .string()
+    .min(1, 'Password is too short')
+    .required('Password is required'),
+});
+
 const LoginForm = ({ onSubmit }) => {
 
   //const [userField, userMeta, userHelpers] = useField('user');
@@ -60,7 +79,7 @@ const LoginForm = ({ onSubmit }) => {
   const onPress = "onSubmit";
 
   return (
-    <View style={{marginTop: 10}}>
+    <View style={{marginTop: 10, backgroundColor: 'white', height: '100%'}}>
 
       <View style={{margin: 10}}>
         <FormikTextInput
@@ -91,7 +110,7 @@ const SignIn = () => {
 
   const onSubmit = (values) => {
 
-    console.log(values);
+    console.log('SignIn', values);
 
     const user = parseFloat(values.user);
 
@@ -103,8 +122,13 @@ const SignIn = () => {
   };
 
   return (
-    <Formik initialValues={initialValues} onSubmit={onSubmit}>
+    <Formik 
+      initialValues={initialValues} 
+      onSubmit={onSubmit} 
+      validationSchema={validationSchema}>
+
       {({ handleSubmit }) => <LoginForm onSubmit={handleSubmit} />}
+
     </Formik>
   );
 

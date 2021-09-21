@@ -2,24 +2,29 @@
 
 import React from 'react';
 
-import { StyleSheet, Text } from 'react-native';
+import { StyleSheet } from 'react-native';
 
 import { useField } from 'formik';
+
+import Text from './Text';
 
 import TextInput from './TextInput';
 
 const styles = StyleSheet.create({
-	input: {
-		borderColor: "lightgray",
-		width: "100%",
+	inputText: {
+		width: '100%',
 		borderWidth: 1,
 		borderRadius: 4,
 		padding: 15,
 		fontSize: 18,
 		fontWeight: 'bold',
+		borderColor: 'lightgray',
+		backgroundColor: 'white'
 	},
 	errorText: {
 		marginTop: 5,
+		fontSize: 18,
+		color: '#d73a4a'
 	},
 });
 
@@ -34,9 +39,10 @@ const FormikTextInput = ({ name, ...props }) => {
 			<TextInput
 			onChangeText={value => helpers.setValue(value)}
 			onBlur={() => helpers.setTouched(true)}
+			//onFocus={() => setFocus(true)}
 			value={field.value}
 			error={showError}
-			style={styles.input}
+			style={[styles.inputText, { borderColor: !(meta.touched && meta.error) ? 'lightgray' : '#d73a4a' }]}
 			{...props}
 			/>
 

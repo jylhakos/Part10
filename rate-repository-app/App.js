@@ -5,9 +5,9 @@
 
 // $ npm install metro-config
 
-// $ npm instal react-native-debugger
+// $ npm install react-native-debugger
 
-// $ npm i --save-dev react-native-debugger-open
+// $ npm install --save-dev react-native-debugger-open
 
 // $ REACT_DEBUGGER="rndebugger-open --open --port 8081" npm start
 

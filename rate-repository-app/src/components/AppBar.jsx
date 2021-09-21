@@ -32,13 +32,13 @@ const AppBar = () => {
 
 		<View style={styles.container}>
 			<ScrollView horizontal>
-				<View style={{paddingLeft: 5, paddingRight: 15 }}>
+				<View style={{paddingTop: 10, paddingBottom: 10, paddingLeft: 5, paddingRight: 15 }}>
 					<Link to="/repositories">
 						<Text style={styles.bar}>Repositories</Text>
 					</Link>
 				</View>
 				
-				<View style={{paddingRight: 15 }}>
+				<View style={{paddingTop: 10, paddingBottom: 10, paddingRight: 15 }}>
 					<Link to="/sigin">
 						<Text style={styles.bar}>Sign In</Text>
 					</Link>

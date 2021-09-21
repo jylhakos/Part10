@@ -4,7 +4,9 @@
 
 import React from 'react';
 
-import { Text, FlatList, View, StyleSheet, Image } from 'react-native';
+import { FlatList, View, StyleSheet, Image } from 'react-native';
+
+import Text from './Text';
 
 // 10.5
 const styles = StyleSheet.create({
