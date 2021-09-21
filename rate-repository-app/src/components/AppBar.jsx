@@ -17,7 +17,6 @@ const styles = StyleSheet.create({
 		fontSize: 20,
 		color: '#FFFFFF',
 		backgroundColor: '#24292e'
-    	// ...
     },
     bar: {
 		fontWeight: 'bold',
@@ -29,30 +28,23 @@ const styles = StyleSheet.create({
 // 10.7
 const AppBar = () => {
 
-	return  (
-		
+	return (
+
 		<View style={styles.container}>
 			<ScrollView horizontal>
-			<View style={{paddingLeft: 5, paddingRight: 15 }}>
-				<Link to="/repositories">
-					<Text style={styles.bar}>Repositories</Text>
-				</Link>
-			</View>
-			
-			<View style={{paddingRight: 15 }}>
-				<Link to="/sigin">
-					<Text style={styles.bar}>Sign In</Text>
-				</Link>
-			</View>
-			<View style={{paddingRight: 150 }}>
-				<Text style={styles.bar}>Tab</Text>
-			</View>
-			<View style={{paddingRight: 200 }}>
-				<Text style={styles.bar}>Tab</Text>
-			</View>
+				<View style={{paddingLeft: 5, paddingRight: 15 }}>
+					<Link to="/repositories">
+						<Text style={styles.bar}>Repositories</Text>
+					</Link>
+				</View>
+				
+				<View style={{paddingRight: 15 }}>
+					<Link to="/sigin">
+						<Text style={styles.bar}>Sign In</Text>
+					</Link>
+				</View>
 			</ScrollView>
 		</View>
-		
   );
 };
 
