@@ -26,6 +26,9 @@ import { NativeRouter } from 'react-router-native';
 // 10.11
 import { ApolloProvider } from '@apollo/client';
 
+// 10.12
+import Constants from 'expo-constants';
+
 // 10.3
 import Main from './src/components/Main';
 
@@ -36,7 +39,7 @@ const apolloClient = createApolloClient();
 //export default function App() {
 const App = () => {
 
-  console.log('App')
+  console.log('App', Constants.manifest, Constants.manifest.extra);
 
   return (
     <NativeRouter>

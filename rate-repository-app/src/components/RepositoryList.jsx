@@ -79,7 +79,7 @@ const RepositoryList = () => {
 
   // const { repositories } = useRepositories();
 
-  const { data, error, loading } = useQuery(GET_REPOSITORIES);
+  const { data, error, loading } = useQuery(GET_REPOSITORIES, { fetchPolicy: 'cache-and-network'} );
 
   console.log(data);
 
