@@ -1,11 +1,18 @@
 // RepositoryList
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { FlatList, View, StyleSheet } from 'react-native';
 
 // 10.3
 import RepositoryItem from './RepositoryItem';
+
+// 10.11
+//import useRepositories from '../hooks/useRepositories';
+
+import { useQuery } from '@apollo/client';
+
+import { GET_REPOSITORIES } from '../graphql/queries';
 
 const styles = StyleSheet.create({
 	separator: {
@@ -17,6 +24,7 @@ const styles = StyleSheet.create({
   },
 });
 
+/*
 const repositories = [
   {
     id: 'jaredpalmer.formik',
@@ -63,12 +71,23 @@ const repositories = [
     ownerAvatarUrl: 'https://avatars3.githubusercontent.com/u/13142323?v=4',
   },
 ];
+*/
 
 const ItemSeparator = () => <View style={styles.separator} />;
 
 const RepositoryList = () => {
 
-	console.log('RepositoryList')
+  // const { repositories } = useRepositories();
+
+  const { data, error, loading } = useQuery(GET_REPOSITORIES);
+
+  console.log(data);
+
+  //const nodes = repositories ? repositories.edges.map(edge => edge.node) : [];
+
+  const nodes = data ? data.repositories.edges.map(edge => edge.node) : [];
+
+	console.log('RepositoryList');
 
 	const renderItem = ({ item }) => (
 		<RepositoryItem fullName={item.fullName} 
@@ -83,7 +102,7 @@ const RepositoryList = () => {
 
 	return (
 		<FlatList
-		data={repositories}
+		data={nodes}
 		ItemSeparatorComponent={ItemSeparator}
 		renderItem={renderItem}
 		keyExtractor={item => item.id}

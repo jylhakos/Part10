@@ -23,8 +23,15 @@ import React from 'react';
 // 10.6
 import { NativeRouter } from 'react-router-native';
 
+// 10.11
+import { ApolloProvider } from '@apollo/client';
+
 // 10.3
 import Main from './src/components/Main';
+
+import createApolloClient from './src/utils/apolloClient';
+
+const apolloClient = createApolloClient();
 
 //export default function App() {
 const App = () => {
@@ -32,11 +39,11 @@ const App = () => {
   console.log('App')
 
   return (
-
     <NativeRouter>
-      <Main />
+      <ApolloProvider client={apolloClient}>
+        <Main />
+      </ApolloProvider>
     </NativeRouter>
-
   );
 };
 
