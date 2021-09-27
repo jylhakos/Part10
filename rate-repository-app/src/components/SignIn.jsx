@@ -1,7 +1,7 @@
 // SignIn.jsx
 
 // 10.6
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { View, StyleSheet, Pressable } from 'react-native';
 
@@ -15,14 +15,22 @@ import FormikTextInput from './FormikTextInput';
 // 10.9
 // $ npm install --save-dev yup
 
+// $ npm install babel-loader --save-dev
+
+
 import * as yup from 'yup';
+
+import theme from './theme';
 
 import Text from './Text';
 
 const initialValues = {
-  user: '',
+  username: '',
   password: ''
 };
+
+// 10.13
+import useSignIn from '../hooks/useSignIn';
 
 const styles = StyleSheet.create({
   button: {
@@ -50,15 +58,17 @@ function Button(props) {
   const { title, onPress } = props;
 
   return (
-    <Pressable style={styles.button} onPress={onPress}>
-      <Text style={styles.text}>{title}</Text>
+    <Pressable {...props}>
+      <View style={styles.button}>
+        <Text style={styles.text} fontWeight="bold">{title}</Text>
+      </View>
     </Pressable>
   );
 }
 
 // 10.9
 const validationSchema = yup.object().shape({
-  user: yup
+  username: yup
     .string()
     .min(1, 'Username is too short')
     .required('Username is required'),
@@ -70,7 +80,7 @@ const validationSchema = yup.object().shape({
 
 const LoginForm = ({ onSubmit }) => {
 
-  //const [userField, userMeta, userHelpers] = useField('user');
+  //const [userField, userMeta, userHelpers] = useField('username');
 
   //const [passwordField, passwordMeta,passwordHelpers] = useField('password');
 
@@ -83,7 +93,7 @@ const LoginForm = ({ onSubmit }) => {
 
       <View style={{margin: 10}}>
         <FormikTextInput
-          name="user"
+          name="username"
           placeholder="Username"
           placeholderTextColor='lightgray'
         />
@@ -106,18 +116,52 @@ const LoginForm = ({ onSubmit }) => {
   );
 };
 
+/*const SignIn = () => {
+
+  const onSubmit = async (values) => {
+
+    const { username, password } = values;
+
+    try {
+
+      const { data } = await signIn({ username, password });
+
+      console.log(data);
+
+    } catch (e) {
+
+      console.log(e);
+    }
+  };
+};*/
+
 const SignIn = () => {
 
-  const onSubmit = (values) => {
+  // 10.13
+  const [signIn] = useSignIn();
+
+  const onSubmit = async (values) => {
 
     console.log('SignIn', values);
 
-    const user = parseFloat(values.user);
+    const { username, password } = values;
 
-    const password = parseFloat(values.password);
+    console.log(username, password);
 
-    if (!isNaN(user) && !isNaN(password) && password !== 0) {
-      console.log(`Logged ${user}`);
+    if (!isNaN(username) && !isNaN(password) && password !== 0) {
+      console.log(`Logged ${username}`);
+    }
+
+    try {
+
+      const { data } = await signIn({ username, password });
+
+      console.log('data', data);
+
+    } catch (e) {
+
+      console.log('error', e);
+
     }
   };
 
