@@ -17,12 +17,16 @@ import FormikTextInput from './FormikTextInput';
 
 // $ npm install babel-loader --save-dev
 
-
 import * as yup from 'yup';
 
 import theme from './theme';
 
 import Text from './Text';
+
+// 10.15
+// $ npm install react-router-dom
+
+import { useHistory } from "react-router-dom";
 
 const initialValues = {
   username: '',
@@ -140,6 +144,9 @@ const SignIn = () => {
   // 10.13
   const [signIn] = useSignIn();
 
+  // 10.15
+  const history = useHistory();
+
   const onSubmit = async (values) => {
 
     console.log('SignIn', values);
@@ -156,7 +163,11 @@ const SignIn = () => {
 
       const { data } = await signIn({ username, password });
 
-      console.log('data', data);
+      console.log('SignIn', data);
+
+      if(data) {
+        history.push("/repositories");
+      }
 
     } catch (e) {
 
