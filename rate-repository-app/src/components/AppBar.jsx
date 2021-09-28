@@ -8,6 +8,12 @@ import { View, StyleSheet, Text, Pressable, ScrollView } from 'react-native';
 
 import Constants from 'expo-constants';
 
+import { useQuery, useApolloClient } from '@apollo/client';
+
+import { GET_AUTHORIZATION } from '../graphql/queries';
+
+import useAuthStorage from '../hooks/useAuthStorage';
+
 const styles = StyleSheet.create({
 	container: {
 		paddingTop: Constants.statusBarHeight,
@@ -30,23 +36,54 @@ const styles = StyleSheet.create({
 // 10.7
 const AppBar = () => {
 
+	const apolloClient = useApolloClient();
+
+	const authStorage = useAuthStorage();
+
+	const { loading, error, data } = useQuery(GET_AUTHORIZATION);
+
+	console.log('AppBar', data);
+
+	if (data) {
+
+		console.log('authorizedUser', data.authorizedUser);
+
+	}
+
 	return (
 
-		<View style={styles.container}>
-			<ScrollView horizontal>
-				<View style={{paddingTop: 10, paddingBottom: 10, paddingLeft: 5, paddingRight: 15 }}>
-					<Link to="/repositories">
-						<Text style={styles.bar}>Repositories</Text>
-					</Link>
-				</View>
-				
+		(data && data.authorizedUser) ? (
+
+			<View style={styles.container}>
+				<ScrollView horizontal>
+					<View style={{paddingTop: 10, paddingBottom: 10, paddingLeft: 5, paddingRight: 15 }}>
+						<Link to="/repositories">
+							<Text style={styles.bar}>Repositories</Text>
+						</Link>
+					</View>
+					
+					<View style={{paddingTop: 10, paddingBottom: 10, paddingRight: 15 }}>
+						<Pressable onPress={() => { console.log("Sign Out"); authStorage.removeAccessToken(); apolloClient.resetStore();}}> 
+							<Text fontWeight="bold" fontSize="subheading" style={styles.bar}>Sign Out</Text>
+						</Pressable>
+					</View>
+
+				</ScrollView>
+			</View>
+
+	) : (
+
+			<View style={styles.container}>
 				<View style={{paddingTop: 10, paddingBottom: 10, paddingRight: 15 }}>
-					<Link to="/sigin">
+					<Link to="/signin">
 						<Text fontWeight="bold" fontSize="subheading" style={styles.bar}>Sign In</Text>
 					</Link>
+					
 				</View>
-			</ScrollView>
-		</View>
+					
+			</View>
+
+		)
   );
 };
 

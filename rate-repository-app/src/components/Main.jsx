@@ -47,7 +47,7 @@ const Main = () => {
 		<View style={styles.container}>
 			<AppBar />
 			<Switch>
-				<Route path="/sigin">
+				<Route path="/signin">
 					<SignIn />
 				</Route>
 				<Route path="/repositories">

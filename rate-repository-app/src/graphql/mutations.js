@@ -12,7 +12,7 @@ export const AUTHORIZE = gql`
 
 /*
 mutation {
-  authorize(credentials: { username: "arto", password: "password" }) {
+  authorize(credentials: { username: "elina", password: "password" }) {
     accessToken
   }
 }
@@ -26,4 +26,3 @@ mutation {
   }
 }
 */
-

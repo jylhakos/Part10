@@ -12,7 +12,7 @@ import RepositoryItem from './RepositoryItem';
 
 import { useQuery } from '@apollo/client';
 
-import { GET_REPOSITORIES } from '../graphql/queries';
+import { GET_AUTHORIZATION, GET_REPOSITORIES } from '../graphql/queries';
 
 const styles = StyleSheet.create({
 	separator: {
@@ -75,13 +75,26 @@ const repositories = [
 
 const ItemSeparator = () => <View style={styles.separator} />;
 
+function authorizedSignIn() {
+
+  const {loading, error, data } = useQuery(GET_AUTHORIZATION);
+
+  console.log('authorizedSignIn', data);
+
+  return data;
+}
+
 const RepositoryList = () => {
 
   // const { repositories } = useRepositories();
 
+  const authorized = authorizedSignIn();
+
+  console.log('GET_AUTHORIZATION', authorized);
+
   const { data, error, loading } = useQuery(GET_REPOSITORIES, { fetchPolicy: 'cache-and-network'} );
 
-  console.log(data);
+  console.log('GET_REPOSITORIES', data);
 
   //const nodes = repositories ? repositories.edges.map(edge => edge.node) : [];
 
@@ -101,6 +114,7 @@ const RepositoryList = () => {
 	);
 
 	return (
+    (authorized && authorized.authorizedUser) ? (
 		<FlatList
 		data={nodes}
 		ItemSeparatorComponent={ItemSeparator}
@@ -108,6 +122,9 @@ const RepositoryList = () => {
 		keyExtractor={item => item.id}
 		// other props
 		/>
+    ) : (
+    <View style={styles.container}/>
+    )
 	);
 };
 

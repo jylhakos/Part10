@@ -45,8 +45,6 @@ const authStorage = new AuthStorage();
 
 const apolloClient = createApolloClient(authStorage);
 
-
-
 //export default function App() {
 const App = () => {
 
