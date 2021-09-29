@@ -40,7 +40,6 @@ const FormikTextInput = ({ name, ...props }) => {
 			<TextInput
 			onChangeText={value => helpers.setValue(value)}
 			onBlur={() => helpers.setTouched(true)}
-			//onFocus={() => setFocus(true)}
 			value={field.value}
 			error={showError}
 			style={[styles.inputText, { borderColor: !(meta.touched && meta.error) ? 'lightgray' : '#d73a4a' }]}

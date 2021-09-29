@@ -166,7 +166,9 @@ const SignIn = () => {
       console.log('SignIn', data);
 
       if(data) {
+
         history.push("/repositories");
+
       }
 
     } catch (e) {

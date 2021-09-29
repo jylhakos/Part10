@@ -70,7 +70,7 @@ function getSuffix(number) {
 
 const RepositoryItem = ( props ) => {
 
-	const { fullName, description, language, forksCount, stargazersCount, ratingAverage, reviewCount, ownerAvatarUrl } = props
+	const { id, fullName, description, language, forksCount, stargazersCount, ratingAverage, reviewCount, ownerAvatarUrl } = props
 
 	console.log('RepositoryItem', props)
 
@@ -83,14 +83,16 @@ const RepositoryItem = ( props ) => {
 	const reviews = getSuffix(reviewCount);
 
 	return (
-		<View style={{backgroundColor : 'white', padding: 5}}>
-			
+		<View testID='id' style={{backgroundColor : 'white', padding: 5}}>
+
+			<View>{id}</View>
+
 			<View style={{flex: 1, flexDirection: 'row'}}>
 				<View style={{flex: 1}, {alignSelf: 'baseline'}}>
 					<Image style={styles.avatar} source={{uri: ownerAvatarUrl}}/>
 				</View>
 				<View style={{flex: 2}, {alignSelf: 'baseline'}}>
-					<Text fontWeight="bold" style={styles.item}>{fullName}</Text>
+					<Text  fontWeight="bold" style={styles.item}>{fullName}</Text>
 
 					<Text style={styles.lightitem}>{description}</Text>
 			
