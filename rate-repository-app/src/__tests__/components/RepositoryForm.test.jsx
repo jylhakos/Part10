@@ -4,11 +4,16 @@ import React, { useState } from 'react';
 
 import { Text, TextInput, Pressable, View } from 'react-native';
 
-import { render, fireEvent, waitFor, act } from '@testing-library/react-native';
+import { render, fireEvent, waitFor, act, screen } from '@testing-library/react-native';
+
+import userEvent from '@testing-library/user-event';
 
 import * as yup from 'yup';
 
 import { Formik } from 'formik';
+
+// 10.18
+// $ npm install --save-dev @testing-library/user-event @testing-library/dom
 
 const Form = ({ onSubmit }) => {
 
@@ -133,30 +138,55 @@ const SignInContainer = ({onSubmit}) => {
 };
 
 // 10.18
-/* describe('SignIn', () => {
+describe('SignIn', () => {
 
 	describe('SignInContainer', () => {
 
 		it('calls onSubmit function with correct arguments when a valid form is submitted', async () => {
-      		// render the SignInContainer component, fill the text inputs and press the submit button
+  		// render the SignInContainer component, fill the text inputs and press the submit button
 
-	      	const onSubmit = jest.fn();
+    	const onSubmit = jest.fn();
 
-	      	const { getByTestId } = render(<SignInContainer onSubmit={onSubmit}/>);
+    	const { debug, getByPlaceholderText, getByText, getByTestId } = render(<SignInContainer onSubmit={onSubmit}/>);
 
-	      	fireEvent.changeText(getByTestId('usernameField'), 'elina');
+    	// debug();
 
-			fireEvent.changeText(getByTestId('passwordField'), 'password');
+    	// const username = getByPlaceholderText('Username');
 
-			fireEvent.press(getByTestId('submitButton'));      	
+  		// const password = getByPlaceholderText('Password');
+  
+  		// const submit = getByText('Submit');
+
+    	await waitFor(() => {
+
+    		fireEvent.changeText(getByTestId('usernameField'), 'elina');
+
+    		//fireEvent.changeText(username, 'elina');
+
+  		});
+
+  		await waitFor(() => {
+
+    		fireEvent.changeText(getByTestId('passwordField'), 'password');
+
+    		//fireEvent.changeText(password, 'password');
+
+  		});
+
+  		await waitFor(() => {
+
+    		fireEvent.press(getByTestId('submitButton'));
+
+    		//fireEvent.press(submit);
+  		});
 
 			await waitFor(() => {
-	        	// expect the onSubmit function to have been called once and with a correct first argument
-		      	expect(onSubmit.mock.calls[0][0]).toEqual({
+	    	// expect the onSubmit function to have been called once and with a correct first argument
+		    expect(onSubmit.mock.calls[0][0]).toEqual({
 					username: 'elina',
 					password: 'password',
 				});
-	      	});
+	    });
     });
   });
-});*/
+});

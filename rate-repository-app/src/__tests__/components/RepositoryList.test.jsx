@@ -56,7 +56,7 @@ describe('RepositoryList', () => {
 
 			const { debug, getAllByTestId } = render(<RepositoryListContainer repositories={repositories}/>);
 
-			debug();
+			// debug();
 
 			const results = getAllByTestId('id');
 
