@@ -38,15 +38,17 @@ const styles = StyleSheet.create({
 		fontSize: 18,
   	},
   	circle: {
-        width: 40,
-    	height: 40,
-    	borderRadius: 40 / 2,
+        width: 46,
+    	height: 46,
+    	borderRadius: 46 / 2,
     	overflow: 'hidden',
     	borderWidth: 2,
     	borderColor: '#0366d6',
-    	paddingLeft: 8,
-    	paddingTop: 8,
-    	fontSize: 18, 
+    	paddingLeft: 2,
+    	paddingTop: 2,
+    	fontSize: 20,
+    	textAlign: 'center',
+    	paddingTop: '20%',
     	color: '#0366d6'
     },
     lightitem: {
@@ -106,7 +108,7 @@ const ReviewItem = ({ review }) => {
 
   			<View style={{backgroundColor: 'white', padding: 5}}>
   				<View style={{flex: 1, flexDirection: 'row'}}>
-					<View style={{flex: 1}, {alignSelf: 'baseline'}, {paddingTop: 15, paddingLeft: 10}}>
+					<View style={{flex: 1}, {paddingTop: 15, paddingLeft: 10}}>
 						<Text style={styles.circle}>{review.rating}</Text>
 					</View>
 					<View style={{flex: 2}, {alignSelf: 'left'}}>
