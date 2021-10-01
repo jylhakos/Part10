@@ -64,7 +64,7 @@ function Button(props) {
   return (
     <Pressable {...props}>
       <View style={styles.button}>
-        <Text style={styles.text} fontWeight="bold">{title}</Text>
+        <Text style={styles.text}>{title}</Text>
       </View>
     </Pressable>
   );

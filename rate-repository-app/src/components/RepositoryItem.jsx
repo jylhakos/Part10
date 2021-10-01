@@ -1,10 +1,15 @@
-// RepositoryItem
+// RepositoryItem.jsx
 
 // $ npm install react-native-web
 
 import React from 'react';
 
-import { FlatList, View, StyleSheet, Image } from 'react-native';
+import { FlatList, View, StyleSheet, Image, Pressable } from 'react-native';
+
+// 10.19
+import { useHistory } from "react-router-dom";
+
+import * as Linking from 'expo-linking';
 
 import Text from './Text';
 
@@ -48,7 +53,23 @@ const styles = StyleSheet.create({
 		backgroundColor : '#0366d6',
 		alignSelf: 'flex-start',
 		
-	}
+	},
+	button: {
+	    alignItems: 'center',
+	    justifyContent: 'center',
+	    paddingVertical: 18,
+	    paddingHorizontal: 28,
+	    borderRadius: 4,
+	    elevation: 3,
+	    backgroundColor: 'blue',
+  	},
+	  	text: {
+	    fontSize: 20,
+	    lineHeight: 22,
+	    fontWeight: 'bold',
+	    letterSpacing: 0.25,
+	    color: 'white',
+  },
 });
 
 const SUFFIX = ["", "k", "M", "G"];
@@ -70,7 +91,9 @@ function getSuffix(number) {
 
 const RepositoryItem = ( props ) => {
 
-	const { id, fullName, description, language, forksCount, stargazersCount, ratingAverage, reviewCount, ownerAvatarUrl } = props
+	console.log('RepositoryItem', props)
+
+	const { id, fullName, description, language, forksCount, stargazersCount, ratingAverage, reviewCount, ownerAvatarUrl, url, hasButton } = props
 
 	console.log('RepositoryItem', props)
 
@@ -82,10 +105,32 @@ const RepositoryItem = ( props ) => {
 
 	const reviews = getSuffix(reviewCount);
 
+	const history = useHistory();
+
+	const onRepositoryItemView = async (param) => {
+
+		const id = param.id;
+
+		console.log('onViewRepositoryItem', id);
+
+		history.push(`/repository/${id}`);
+
+	}
+
+	const openGithubLink = ({url}) => {
+
+		console.log("openGithubLink", url);
+
+    	Linking.openURL(url);
+  	};
+
 	return (
+
 		<View testID='id' style={{backgroundColor : 'white', padding: 5}}>
 
-			<View>{id}</View>
+			<View style={{ display: "none" }}><Text>{id}</Text></View>
+
+			<Pressable onPress={() => {console.log('onPress', {id}); onRepositoryItemView({id})}}>
 
 			<View style={{flex: 1, flexDirection: 'row'}}>
 				<View style={{flex: 1}, {alignSelf: 'baseline'}}>
@@ -101,24 +146,41 @@ const RepositoryItem = ( props ) => {
 			</View>
 
 			<View style={{flex: 1, flexDirection: 'row', paddingTop: 25}}>
-				<View style={{flex: 1}, {alignSelf: 'baseline'}}>
+				<View style={{flex: 1}, {alignSelf: 'center'}}>
 					<Text style={styles.fixitem} >{stars}</Text>
 					<Text style={styles.lightitem} >Stars</Text>
 				</View>
-				<View style={{flex: 2}, {alignSelf: 'baseline'}}>
+				<View style={{flex: 2}, {alignSelf: 'center'}}>
 					<Text style={styles.fixitem} >{forks}</Text>
 					<Text style={styles.lightitem} >Forks</Text>
 				</View>
-				<View style={{flex: 3}, {alignSelf: 'baseline'}}>
+				<View style={{flex: 3}, {alignSelf: 'center'}}>
 					<Text style={styles.fixitem}>{reviews}</Text>
 					<Text style={styles.lightitem}>Reviews</Text>
 				</View>
-				<View style={{flex: 4}, {alignSelf: 'baseline'}}>
+				<View style={{flex: 4}, {alignSelf: 'center'}}>
 					<Text style={styles.fixitem} >{rating}</Text>
 					<Text style={styles.lightitem} >Rating</Text>
 				</View>
 			</View>
+
+			<View style={{paddingTop: 75, paddingBottom: 75, paddingLeft: 15, paddingRight: 15 }}>
+				{ 
+					(hasButton) ? (
+					<View style={styles.button}>
+					<Pressable onPress={() => { openGithubLink({url}); }}> 
+						<Text style={styles.text}>Open In Github</Text>
+					</Pressable>
+					</View>
+					) : null 
+				}
+			</View>
+			
+
+			</Pressable>
+
 		</View>
+		
 	)
 };
 

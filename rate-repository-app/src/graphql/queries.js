@@ -25,12 +25,30 @@ export const GET_REPOSITORIES = gql`
 `;
 
 export const GET_AUTHORIZATION = gql`
-{
-  authorizedUser {
-    id
-    username
+  {
+    authorizedUser {
+      id
+      username
+    }
   }
-}
+`;
+
+export const GET_REPOSITORY = gql`
+  query repository($id: ID!) {
+    repository(id: $id) {
+      id
+      name
+      fullName
+      description
+      ratingAverage
+      reviewCount
+      stargazersCount
+      forksCount
+      url
+      ownerAvatarUrl
+      language
+    }
+  }
 `;
 
 /*

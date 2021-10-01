@@ -103,14 +103,20 @@ const RepositoryList = () => {
 	console.log('RepositoryList');
 
 	const renderItem = ({ item }) => (
-		<RepositoryItem fullName={item.fullName} 
-						description={item.description}
-						language={item.language}
-						forksCount={item.forksCount}
-						stargazersCount={item.stargazersCount}
-						ratingAverage={item.ratingAverage}
-						reviewCount={item.reviewCount}
-            ownerAvatarUrl={item.ownerAvatarUrl}/>
+    
+  		<RepositoryItem 
+              id={item.id}
+              fullName={item.fullName} 
+  						description={item.description}
+  						language={item.language}
+  						forksCount={item.forksCount}
+  						stargazersCount={item.stargazersCount}
+  						ratingAverage={item.ratingAverage}
+  						reviewCount={item.reviewCount}
+              ownerAvatarUrl={item.ownerAvatarUrl}
+              url={item.url}
+              hasButton={false}/>
+    
 	);
 
 	return (

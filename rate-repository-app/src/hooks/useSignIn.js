@@ -25,7 +25,7 @@ const useSignIn = () => {
 
 		console.log('signIn', username, password);
 
-		const data = await mutate({ variables: { username: username, password: password } });
+		const data = await mutate({ variables: { username: username, password: password }});
 
 		console.log('data', data);
 
