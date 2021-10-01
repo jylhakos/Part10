@@ -11,7 +11,7 @@ import Constants from 'expo-constants';
 import { setContext } from '@apollo/client/link/context';
 
 const httpLink = createHttpLink({
-	//uri: 'http://192.168.31.219:5000/graphql',
+	//uri: 'http://192.168.31.179:5000/graphql',
 	uri: Constants.manifest.extra.APOLLO_URI
 });
 

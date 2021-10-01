@@ -93,7 +93,7 @@ const RepositoryItem = ( props ) => {
 
 	console.log('RepositoryItem', props)
 
-	const { id, fullName, description, language, forksCount, stargazersCount, ratingAverage, reviewCount, ownerAvatarUrl, url, hasButton } = props
+	const { id, fullName, description, language, forksCount, stargazersCount, ratingAverage, reviewCount, ownerAvatarUrl, url, reviews, hasButton } = props
 
 	console.log('RepositoryItem', props)
 
@@ -103,7 +103,7 @@ const RepositoryItem = ( props ) => {
 
 	const rating = getSuffix(ratingAverage);
 
-	const reviews = getSuffix(reviewCount);
+	const review = getSuffix(reviewCount);
 
 	const history = useHistory();
 
@@ -124,6 +124,10 @@ const RepositoryItem = ( props ) => {
     	Linking.openURL(url);
   	};
 
+  	if(reviews) {
+  		console.log('reviews', reviews);
+  	}
+
 	return (
 
 		<View testID='id' style={{backgroundColor : 'white', padding: 5}}>
@@ -137,7 +141,7 @@ const RepositoryItem = ( props ) => {
 					<Image style={styles.avatar} source={{uri: ownerAvatarUrl}}/>
 				</View>
 				<View style={{flex: 2}, {alignSelf: 'baseline'}}>
-					<Text  fontWeight="bold" style={styles.item}>{fullName}</Text>
+					<Text fontWeight="bold" style={styles.item}>{fullName}</Text>
 
 					<Text style={styles.lightitem}>{description}</Text>
 			
@@ -146,25 +150,25 @@ const RepositoryItem = ( props ) => {
 			</View>
 
 			<View style={{flex: 1, flexDirection: 'row', paddingTop: 25}}>
-				<View style={{flex: 1}, {alignSelf: 'center'}}>
+				<View style={{flex: 1}, {alignSelf: 'baseline'}}>
 					<Text style={styles.fixitem} >{stars}</Text>
 					<Text style={styles.lightitem} >Stars</Text>
 				</View>
-				<View style={{flex: 2}, {alignSelf: 'center'}}>
+				<View style={{flex: 2}, {alignSelf: 'baseline'}}>
 					<Text style={styles.fixitem} >{forks}</Text>
 					<Text style={styles.lightitem} >Forks</Text>
 				</View>
-				<View style={{flex: 3}, {alignSelf: 'center'}}>
-					<Text style={styles.fixitem}>{reviews}</Text>
+				<View style={{flex: 3}, {alignSelf: 'baseline'}}>
+					<Text style={styles.fixitem}>{review}</Text>
 					<Text style={styles.lightitem}>Reviews</Text>
 				</View>
-				<View style={{flex: 4}, {alignSelf: 'center'}}>
+				<View style={{flex: 4}, {alignSelf: 'baseline'}}>
 					<Text style={styles.fixitem} >{rating}</Text>
 					<Text style={styles.lightitem} >Rating</Text>
 				</View>
 			</View>
 
-			<View style={{paddingTop: 75, paddingBottom: 75, paddingLeft: 15, paddingRight: 15 }}>
+			<View style={{paddingTop: 15, paddingBottom: 25, paddingLeft: 15, paddingRight: 15 }}>
 				{ 
 					(hasButton) ? (
 					<View style={styles.button}>

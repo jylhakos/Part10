@@ -4,7 +4,12 @@ import React , { useState } from 'react';
 
 import { useParams } from 'react-router-native';
 
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, FlatList } from 'react-native';
+
+// 10.20
+import { format, parseISO } from 'date-fns'
+
+// $ npm install date-fns --save
 
 import RepositoryItem from './RepositoryItem';
 
@@ -14,41 +19,120 @@ import RepositoryItem from './RepositoryItem';
 
 import useRepository from '../hooks/useRepository';
 
+import Text from './Text';
+
 const styles = StyleSheet.create({
 	separator: {
 		height: 10,
 	},
 	item: {
-		padding: 10,
+		paddingLeft: 68,
+		paddingTop: 10,
+		paddingBottom: 10,
 		fontSize: 16,
   	},
+  	user: {
+		paddingLeft: 20,
+		paddingTop: 10,
+		paddingBottom: 10,
+		fontSize: 18,
+  	},
+  	circle: {
+        width: 40,
+    	height: 40,
+    	borderRadius: 40 / 2,
+    	overflow: 'hidden',
+    	borderWidth: 2,
+    	borderColor: '#0366d6',
+    	paddingLeft: 8,
+    	paddingTop: 8,
+    	fontSize: 18, 
+    	color: '#0366d6'
+    },
+    lightitem: {
+		paddingTop: 5,
+		paddingLeft: 20,
+		fontSize: 18,
+		fontFamily: 'Roboto',
+		fontWeight: 'bold',
+		color: 'grey'
+	},
 });
+
+const ItemSeparator = () => <View style={styles.separator} />;
+
+const RepositoryInfo = ({ repository }) => {
+
+	return (
+		(repository) ? (
+			<>
+  			<RepositoryItem 
+					fullName={repository.fullName} 
+  					description={repository.description}
+  					language={repository.language}
+  					forksCount={repository.forksCount}
+  					stargazersCount={repository.stargazersCount}
+  					ratingAverage={repository.ratingAverage}
+  					reviewCount={repository.reviewCount}
+              		ownerAvatarUrl={repository.ownerAvatarUrl}
+              		url={repository.url}
+              		reviews={repository.reviews}
+              		hasButton={true}/>
+            <View style={styles.separator}/>
+            </>
+            ) : null
+
+		)
+	};
+
+const ReviewItem = ({ review }) => {
+
+  	console.log('review', review, 'review.createdAt', review.createdAt);
+
+  	const date = parseISO(review.createdAt);
+
+	console.log('date', date);
+
+	const year = date.getUTCFullYear();
+
+	const month = date.getUTCMonth();
+
+	const day = date.getUTCDate();
+
+	const createdAt = day + '.' + month + '.' + year;
+
+  	return(
+  		(review) ? (
+
+  			<View style={{backgroundColor: 'white', padding: 5}}>
+  				<View style={{flex: 1, flexDirection: 'row'}}>
+					<View style={{flex: 1}, {alignSelf: 'baseline'}, {paddingTop: 15, paddingLeft: 10}}>
+						<Text style={styles.circle}>{review.rating}</Text>
+					</View>
+					<View style={{flex: 2}, {alignSelf: 'left'}}>
+						<Text fontWeight="bold" style={styles.user}>{review.user.username}</Text>
+						<Text style={styles.lightitem}>{createdAt}</Text>
+					</View>
+				</View>
+				<View style={{flex: 1}, {flexDirection: 'row'}}>
+					<View style={{flex: 1, alignSelf: 'baseline'}}>
+						<Text style={styles.item}>{review.text}</Text>
+					</View>
+				</View>
+			</View>
+  		) : null
+  	);
+};
 
 const RepositoryItemView = () => {
 
-	const [item, setItem] = useState(null)
+	const [repository, setRepository] = useState(null)
 
 	const [useRepositoryQuery] = useRepository();
 
 	const { id } = useParams();
 
 	console.log('RepositoryItemView', id);
-
-	/*const getQuery = async ( ID ) => {
-
-		console.log('getQuery', ID)
-
-		const { loading, error, data } = await useQuery(GET_REPOSITORY, { variables: { id: 'jaredpalmer.formik' }});
-
-  		console.log('GET_REPOSITORY', loading, error, data);
-
-  		if (data && data.repository) {
-
-  			console.log('data.repository', data.repository);
-
-  			return data.repository;
-  		}
-	}*/
 
 	const getQuery = async () => {
 
@@ -60,30 +144,35 @@ const RepositoryItemView = () => {
 
     		console.log('getQuery', data);
 
-   			setItem(data);
+   			setRepository(data);
 
    		}
    	}
 
 	getQuery();
+
+	let reviews = []
+
+	if(repository && repository.reviews) {
+
+		console.log('repository.reviews', repository.reviews);
+
+		reviews = repository.reviews ? repository.reviews.edges.map(edge => edge.node) : [];
+
+	}
 	
-	return (
-			(item) ? (
 
-	  			<RepositoryItem 
-						fullName={item.fullName} 
-	  					description={item.description}
-	  					language={item.language}
-	  					forksCount={item.forksCount}
-	  					stargazersCount={item.stargazersCount}
-	  					ratingAverage={item.ratingAverage}
-	  					reviewCount={item.reviewCount}
-	              		ownerAvatarUrl={item.ownerAvatarUrl}
-	              		url={item.url}
-	              		hasButton={true}/>
-	            ) : null
-
-    		)
+  	return (
+  		(repository) ? (
+		    <FlatList
+		      data={reviews}
+		      renderItem={({ item }) => <ReviewItem review={item} />}
+		      keyExtractor={({ id }) => id}
+		      ItemSeparatorComponent={ItemSeparator}
+		      ListHeaderComponent={() => <RepositoryInfo repository={repository} />}
+		    />
+	    ) : null
+	 );
 
 };
 

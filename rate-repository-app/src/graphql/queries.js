@@ -47,6 +47,20 @@ export const GET_REPOSITORY = gql`
       url
       ownerAvatarUrl
       language
+      reviews {
+        edges {
+          node {
+            id
+            text
+            rating
+            createdAt
+            user {
+              id
+              username
+            }
+          }
+        }
+      }
     }
   }
 `;
@@ -73,10 +87,26 @@ query {
   }
 */
 
+/*
+mutation {
+  authorize(credentials: { username: "kalle", password: "password" }) {
+    accessToken
+  }
+}
+*/
 
 /*
 {
   authorizedUser {
+    id
+    username
+  }
+}
+*/
+
+/*
+mutation {
+  createUser(user: { username: "username", password: "password" }) {
     id
     username
   }

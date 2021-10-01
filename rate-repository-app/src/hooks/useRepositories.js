@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 
-// http://192.168.31.219:5000/api/repositories
+// http://192.168.31.179:5000/api/repositories
 
 const useRepositories = () => {
 
@@ -11,7 +11,7 @@ const useRepositories = () => {
 
 	const [loading, setLoading] = useState(false);
 
-	const uri = 'http://192.168.31.219:5000/api/repositories';
+	const uri = 'http://192.168.31.179:5000/api/repositories';
 
 	const fetchRepositories = async () => {
 
