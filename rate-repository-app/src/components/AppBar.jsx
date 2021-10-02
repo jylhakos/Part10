@@ -86,7 +86,14 @@ const AppBar = () => {
 					</Link>
 					
 				</View>
-					
+
+				<View style={{paddingTop: 10, paddingBottom: 10, paddingRight: 15 }}>
+					<Link to="/signup">
+						<Text fontWeight="bold" fontSize="subheading" style={styles.bar}>Sign Up</Text>
+					</Link>
+
+				</View>
+
 			</View>
 
 		)

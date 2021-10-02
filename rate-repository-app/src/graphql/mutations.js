@@ -18,6 +18,16 @@ export const REVIEW = gql`
 }
 `;
 
+export const SIGNUP = gql`
+  mutation ($username: String!, $password: String!) {
+    createUser(user: { username: $username, password: $password }) {
+    id
+    username
+  }
+}
+`;
+
+
 /*
 mutation {
   authorize(credentials: { username: "elina", password: "password" }) {
