@@ -97,7 +97,7 @@ const ReviewItem = ({ review }) => {
 
 	const year = date.getUTCFullYear();
 
-	const month = date.getUTCMonth();
+	const month = date.getUTCMonth() + 1;
 
 	const day = date.getUTCDate();
 

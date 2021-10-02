@@ -26,6 +26,9 @@ import AppBar from './AppBar';
 // 10.19
 import RepositoryItemView from './RepositoryItemView';
 
+// 10.21
+import Review from './Review';
+
 const styles = StyleSheet.create({
 	container: {
 		//marginTop: Constants.statusBarHeight,
@@ -52,6 +55,9 @@ const Main = () => {
 		<View style={styles.container}>
 			<AppBar />
 			<Switch>
+				<Route path="/createreview">
+					<Review />
+				</Route>
 				<Route path="/signin">
 					<SignIn />
 				</Route>
@@ -59,7 +65,7 @@ const Main = () => {
 					<RepositoryList />
 				</Route>
 				<Route path="/repository/:id" component={RepositoryItemView}>
-      			</Route>
+				</Route>
 				<Route path="/" exact>
         			<RepositoryList />
         		</Route>

@@ -61,6 +61,12 @@ const AppBar = () => {
 							<Text style={styles.bar}>Repositories</Text>
 						</Link>
 					</View>
+
+					<View style={{paddingTop: 10, paddingBottom: 10, paddingRight: 15 }}>
+						<Link to="/createreview">
+							<Text fontWeight="bold" fontSize="subheading" style={styles.bar}>Create a review</Text>
+						</Link>
+					</View>
 					
 					<View style={{paddingTop: 10, paddingBottom: 10, paddingRight: 15 }}>
 						<Pressable onPress={() => { console.log("Sign Out"); authStorage.removeAccessToken(); apolloClient.resetStore();}}> 

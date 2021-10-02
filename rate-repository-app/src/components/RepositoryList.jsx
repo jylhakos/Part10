@@ -88,9 +88,9 @@ const RepositoryList = () => {
 
   // const { repositories } = useRepositories();
 
-  const authorized = authorizedSignIn();
+  // const authorized = authorizedSignIn();
 
-  console.log('GET_AUTHORIZATION', authorized);
+  // console.log('GET_AUTHORIZATION', authorized);
 
   const { data, error, loading } = useQuery(GET_REPOSITORIES, { fetchPolicy: 'cache-and-network'} );
 
@@ -120,7 +120,7 @@ const RepositoryList = () => {
 	);
 
 	return (
-    (authorized && authorized.authorizedUser) ? (
+    //(authorized && authorized.authorizedUser) ? (
 		<FlatList
 		data={nodes}
 		ItemSeparatorComponent={ItemSeparator}
@@ -128,9 +128,9 @@ const RepositoryList = () => {
 		keyExtractor={item => item.id}
 		// other props
 		/>
-    ) : (
-    <View style={styles.container}/>
-    )
+    //) : (
+    //<View style={styles.container}/>
+    //)
 	);
 };
 
