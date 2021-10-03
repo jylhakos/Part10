@@ -2,7 +2,21 @@
 
 import { useState, useEffect } from 'react';
 
+import { useQuery } from '@apollo/client';
+
 // http://192.168.31.179:5000/api/repositories
+
+import { GET_AUTHORIZATION, GET_REPOSITORIES } from '../graphql/queries';
+
+const OrderDirection = {
+  ASC: 'ASC',
+  DESC: 'DESC'
+ };
+
+const AllRepositoriesOrderBy = {
+  CREATED_AT: 'CREATED_AT',
+  RATING_AVERAGE: 'RATING_AVERAGE'
+};
 
 const useRepositories = () => {
 
@@ -30,11 +44,32 @@ const useRepositories = () => {
 	    setRepositories(data);
 	};
 
-useEffect(() => {
-	fetchRepositories();
-}, []);
+	const getRepositories = async (variables) => {
 
-return { repositories, loading, refetch: fetchRepositories };
+    	console.log('getRepositores', variables);
+
+    	const { loading, error, data } = await useQuery(GET_REPOSITORIES, { variables: variables, fetchPolicy: 'cache-and-network'} );
+
+    	//const { loading, error, data } = await useQuery(GET_REPOSITORIES, { variables: {orderBy: AllRepositoriesOrderBy.RATING_AVERAGE, orderDirection: OrderDirection.DESC}, fetchPolicy: 'cache-and-network'} );
+
+      	console.log('GET_REPOSITORIES', loading, error, data);
+
+      	if (data && data.repositories) {
+
+        	console.log('data.repositories', data);
+
+        	return data.repositories;
+      	}
+    };
+ 
+// 10.11
+//useEffect(() => {
+//	fetchRepositories();
+//}, []);
+
+//return { repositories, loading, refetch: fetchRepositories };
+
+return [getRepositories];
 
 };
 

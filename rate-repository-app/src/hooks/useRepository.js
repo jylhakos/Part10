@@ -12,7 +12,7 @@ const useRepository = () => {
 
 		console.log('useRepositoryQuery', param.id)
 
-		const { loading, error, data } = await useQuery(GET_REPOSITORY, { variables: { id: param.id }});
+		const { loading, error, data } = await useQuery(GET_REPOSITORY, { fetchPolicy: 'cache-and-network', variables: { id: param.id }});
 
   		console.log('GET_REPOSITORY', loading, error, data);
 
