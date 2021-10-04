@@ -74,7 +74,7 @@ const validationSchema = yup.object().shape({
     .max(100, 'rating is too big')
     .required('rating is required'),
   text: yup
-  	.string()
+    .string()
     .notRequired(),
 });
 

@@ -4,7 +4,7 @@ import React from 'react';
 
 import { Link } from 'react-router-native';
 
-import { View, StyleSheet, Text, Pressable, ScrollView } from 'react-native';
+import { View, StyleSheet, Text, Pressable, TouchableOpacity, ScrollView } from 'react-native';
 
 import Constants from 'expo-constants';
 
@@ -69,9 +69,9 @@ const AppBar = () => {
 					</View>
 					
 					<View style={{paddingTop: 10, paddingBottom: 10, paddingRight: 15 }}>
-						<Pressable onPress={() => { console.log("Sign Out"); authStorage.removeAccessToken(); apolloClient.resetStore();}}> 
+						<TouchableOpacity onPress={() => { console.log("Sign Out"); authStorage.removeAccessToken(); apolloClient.resetStore();}}> 
 							<Text fontWeight="bold" fontSize="subheading" style={styles.bar}>Sign Out</Text>
-						</Pressable>
+						</TouchableOpacity>
 					</View>
 
 				</ScrollView>
@@ -80,6 +80,13 @@ const AppBar = () => {
 	) : (
 
 			<View style={styles.container}>
+
+				<View style={{paddingTop: 10, paddingBottom: 10, paddingLeft: 5, paddingRight: 15 }}>
+					<Link to="/repositories">
+						<Text style={styles.bar}>Repositories</Text>
+					</Link>
+				</View>
+
 				<View style={{paddingTop: 10, paddingBottom: 10, paddingRight: 15 }}>
 					<Link to="/signin">
 						<Text fontWeight="bold" fontSize="subheading" style={styles.bar}>Sign In</Text>

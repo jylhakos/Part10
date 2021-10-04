@@ -6,25 +6,25 @@ import { GET_REPOSITORY } from '../graphql/queries';
 
 const useRepository = () => {
 
-	console.log('useRepository')
+	// console.log('useRepository')
 
-	const useRepositoryQuery = async ( param ) => {
+	const repositoryQuery = async ( param ) => {
 
-		console.log('useRepositoryQuery', param.id)
+		// console.log('repositoryQuery', param.id)
 
 		const { loading, error, data } = await useQuery(GET_REPOSITORY, { fetchPolicy: 'cache-and-network', variables: { id: param.id }});
 
-  		console.log('GET_REPOSITORY', loading, error, data);
+  		// console.log('GET_REPOSITORY', loading, error, data);
 
   		if (data && data.repository) {
 
-  			console.log('data.repository', data.repository);
+  			// console.log('data.repository', data.repository);
 
   			return data.repository;
   		}
 	}
 
-	return [useRepositoryQuery];
+	return [repositoryQuery];
 }
 
 export default useRepository;

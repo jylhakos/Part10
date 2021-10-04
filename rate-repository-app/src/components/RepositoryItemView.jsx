@@ -68,24 +68,24 @@ const RepositoryInfo = ({ repository }) => {
 	return (
 		(repository) ? (
 			<>
-  			<RepositoryItem 
-					fullName={repository.fullName} 
-  					description={repository.description}
-  					language={repository.language}
-  					forksCount={repository.forksCount}
-  					stargazersCount={repository.stargazersCount}
-  					ratingAverage={repository.ratingAverage}
-  					reviewCount={repository.reviewCount}
-              		ownerAvatarUrl={repository.ownerAvatarUrl}
-              		url={repository.url}
-              		reviews={repository.reviews}
-              		hasButton={true}/>
-            <View style={styles.separator}/>
+	  			<RepositoryItem 
+						fullName={repository.fullName} 
+	  					description={repository.description}
+	  					language={repository.language}
+	  					forksCount={repository.forksCount}
+	  					stargazersCount={repository.stargazersCount}
+	  					ratingAverage={repository.ratingAverage}
+	  					reviewCount={repository.reviewCount}
+	              		ownerAvatarUrl={repository.ownerAvatarUrl}
+	              		url={repository.url}
+	              		reviews={repository.reviews}
+	              		hasButton={true}/>
+	            <View style={styles.separator}/>
             </>
             ) : null
 
 		)
-	};
+};
 
 const ReviewItem = ({ review }) => {
 
@@ -128,9 +128,9 @@ const ReviewItem = ({ review }) => {
 
 const RepositoryItemView = () => {
 
-	const [repository, setRepository] = useState(null)
+	const [repository, setRepository] = useState(null);
 
-	const [useRepositoryQuery] = useRepository();
+	const [repositoryQuery] = useRepository();
 
 	const { id } = useParams();
 
@@ -140,7 +140,7 @@ const RepositoryItemView = () => {
 
 		console.log('getQuery', id)
 
-		const data = await useRepositoryQuery({ id });
+		const data = await repositoryQuery({ id });
 
 		if (data) {
 
@@ -162,7 +162,6 @@ const RepositoryItemView = () => {
 		reviews = repository.reviews ? repository.reviews.edges.map(edge => edge.node) : [];
 
 	}
-	
 
   	return (
   		(repository) ? (

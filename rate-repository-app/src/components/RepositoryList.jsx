@@ -1,6 +1,6 @@
 // RepositoryList.jsx
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 import { FlatList, View, StyleSheet } from 'react-native';
 
@@ -12,7 +12,7 @@ import RepositoryItem from './RepositoryItem';
 // 10.11
 import useRepositories from '../hooks/useRepositories';
 
-import { useQuery } from '@apollo/client';
+// import { useQuery } from '@apollo/client';
 
 // import { GET_AUTHORIZATION, GET_REPOSITORIES } from '../graphql/queries';
 
@@ -22,6 +22,17 @@ import { useQuery } from '@apollo/client';
 import {Picker} from '@react-native-picker/picker';
 
 import Text from './Text';
+
+// 10.24
+// $ npm install react-native-paper --save
+
+import { Searchbar } from 'react-native-paper';
+
+import useSearchQuery from '../hooks/useSearchQuery';
+
+// $ npm install use-debounce --save
+
+import { useDebounce, useDebouncedCallback } from 'use-debounce';
 
 const styles = StyleSheet.create({
 	separator: {
@@ -70,9 +81,55 @@ function authorizedSignIn() {
   return data;
 }
 
-const RepositoryOrder = ({ selectOrder, setSelectOrder, setOrderBy, setOrderDirection}) => {
 
-  console.log('RepositoryOrder', selectOrder)
+const SearchBar = ({ searchKeyword, setSearchKeyword, setHook }) => {
+
+  const input = useRef(null);
+
+  useEffect(() => {
+
+    if (input.current != null && searchKeyword) {
+
+      input.current.focus();
+
+    }
+
+  }, [searchKeyword]);
+
+  const [value] = useDebounce(searchKeyword, 500);
+
+  const debounced = useDebouncedCallback(
+
+    (value) => {
+
+      setSearchKeyword(value);
+
+      setHook('search');
+    },
+
+    500
+
+  );
+
+  const onChangeSearch = (value) => { debounced(value) };
+
+  return (
+    <View style={{paddingTop: 15, paddingBottom: 5, paddingLeft: 25, paddingRight: 25 }}>
+      <Searchbar
+        ref={input}
+        key={"searchbar"}
+        autoFocus={false}
+        placeholder="Search"
+        onChangeText={onChangeSearch}
+        value={searchKeyword}
+      />
+    </View>
+  );
+};
+
+const RepositoryOrder = ({ selectOrder, setSelectOrder, setOrderBy, setOrderDirection, setHook }) => {
+
+  // console.log('RepositoryOrder', selectOrder)
 
   const selectState = (value) => {
 
@@ -96,12 +153,12 @@ const RepositoryOrder = ({ selectOrder, setSelectOrder, setOrderBy, setOrderDire
   }
 
   return (
-        <View style={{paddingTop: 5, paddingBottom: 5 }}>
+        <View style={{paddingTop: 5, paddingBottom: 5, paddingLeft: 20, paddingRight: 20 }}>
           <Picker 
             style={styles.picker}
             showTickIcon={false}
             selectedValue={selectOrder}
-            onValueChange={(value, index) => {setSelectOrder(value); selectState(value)}}
+            onValueChange={(value, index) => {setSelectOrder(value); selectState(value); setHook('query') }}
           >
           <Picker.Item label="Latest repositories" value={PickerOrder.LATEST} />
           <Picker.Item label="Highest rated repositories" value={PickerOrder.HIGHEST} />
@@ -121,11 +178,17 @@ const RepositoryList = () => {
 
   // console.log('GET_AUTHORIZATION', authorized);
 
+  const [hook, setHook] = useState('query');
+
   const [getRepositories] = useRepositories();
 
   const [repositories, setRepositories] = useState(null);
 
   let nodes = [];
+
+  const [searchKeyword, setSearchKeyword] = useState('');
+
+  const [searchRepositoryQuery] = useSearchQuery();
 
   const [orderBy, setOrderBy] = useState(AllRepositoriesOrderBy.CREATED_AT);
 
@@ -133,31 +196,43 @@ const RepositoryList = () => {
 
   const [selectOrder, setSelectOrder] = useState("latest");
 
-  console.log('orderBy', orderBy, 'orderDirection', orderDirection, 'selectOrder', selectOrder);
+  // console.log('orderBy', orderBy, 'orderDirection', orderDirection, 'selectOrder', selectOrder);
 
-  //const { data, error, loading } = useQuery(GET_REPOSITORIES, { variables: {orderBy: 'CREATED_AT', orderDirection: 'DESC'}}, { fetchPolicy: 'cache-and-network'} );
+  //const [value] = useDebounce(searchKeyword, 500);
 
-  //console.log('GET_REPOSITORIES', data);
+  /*const debounced = useDebouncedCallback(
 
-  /*const getRepositores = async () => {
+    (value) => {
 
-    console.log('getRepositores')
+      setSearchKeyword(value);
 
-    const { loading, error, data } = await useQuery(GET_REPOSITORIES, { variables: {orderBy: AllRepositoriesOrderBy.CREATED_AT, orderDirection: OrderDirection.DESC}, fetchPolicy: 'cache-and-network'} );
+      setHook('search');
+    },
 
-      console.log('GET_REPOSITORIES', loading, error, data);
+    250
 
-      if (data && data.repositories) {
+  );*/
 
-        console.log('return', data);
+  ///const onChangeSearch = (value) => { debounced(value) };
 
-        return data;
-      }
-  }*/
+  const searchRepositories = async () => {
+
+    // console.log('searchRepositories', searchKeyword);
+
+    const data = await searchRepositoryQuery(searchKeyword);
+
+    if (data) {
+
+        // console.log('searchQuery', data);
+
+        setRepositories(data);
+    }
+
+  };
 
   const queryRepositories = async () => {
 
-    console.log('queryRepositories', orderBy, orderDirection);
+    // console.log('queryRepositories', orderBy, orderDirection);
 
     const variables = {orderBy: orderBy, orderDirection: orderDirection};
 
@@ -165,50 +240,76 @@ const RepositoryList = () => {
 
     if (data) {
 
-        console.log('queryRepositories', data);
+        // console.log('queryRepositories', data);
 
         setRepositories(data);
     }
-  }
+  };
 
-  queryRepositories();
+  if (hook === 'search') {
+
+    // console.log('SEARCH');
+
+    searchRepositories();
+
+  }
+  else {
+
+    // console.log('QUERY');
+
+    queryRepositories();
+  }
 
   if(repositories && repositories.edges) {
 
     nodes = repositories ? repositories.edges.map(edge => edge.node) : [];
 
-    console.log('nodes', nodes)
+    // console.log('nodes', nodes)
 
   }
 
-	console.log('RepositoryList');
+	// console.log('RepositoryList');
 
 	const renderItem = ({ item }) => (
     
-		<RepositoryItem 
-            id={item.id}
-            fullName={item.fullName} 
-						description={item.description}
-						language={item.language}
-						forksCount={item.forksCount}
-						stargazersCount={item.stargazersCount}
-						ratingAverage={item.ratingAverage}
-						reviewCount={item.reviewCount}
-            ownerAvatarUrl={item.ownerAvatarUrl}
-            url={item.url}
-            hasButton={false}/>
+	<RepositoryItem 
+      id={item.id}
+      fullName={item.fullName} 
+			description={item.description}
+			language={item.language}
+			forksCount={item.forksCount}
+			stargazersCount={item.stargazersCount}
+			ratingAverage={item.ratingAverage}
+			reviewCount={item.reviewCount}
+      ownerAvatarUrl={item.ownerAvatarUrl}
+      url={item.url}
+      hasButton={false}/>
     
 	);
 
 	return (
     //(authorized && authorized.authorizedUser) ? (
 		<FlatList
-		data={nodes}
-		ItemSeparatorComponent={ItemSeparator}
-		renderItem={renderItem}
-		keyExtractor={item => item.id}
-    ListHeaderComponent={() => <RepositoryOrder selectOrder={selectOrder} setSelectOrder={setSelectOrder} setOrderBy={setOrderBy} setOrderDirection={setOrderDirection} />}
-		/>
+  		data={nodes}
+  		ItemSeparatorComponent={ItemSeparator}
+  		renderItem={renderItem}
+  		keyExtractor={item => item.id}
+      ListHeaderComponent={() => <><SearchBar searchKeyword={searchKeyword} setSearchKeyword={setSearchKeyword} setHook={setHook}/> <RepositoryOrder selectOrder={selectOrder} setSelectOrder={setSelectOrder} setOrderBy={setOrderBy} setOrderDirection={setOrderDirection} setHook={setHook} /></>}
+  		/*ListHeaderComponent={() => 
+        <> 
+        <View style={{paddingTop: 15, paddingBottom: 5, paddingLeft: 25, paddingRight: 25 }}>
+        <Searchbar
+          key={"searchbar"}
+          autoFocus={false}
+          placeholder="Search"
+          onChangeText={onChangeSearch}
+          value={searchKeyword}
+        />
+        </View> 
+        <RepositoryOrder selectOrder={selectOrder} setSelectOrder={setSelectOrder} setOrderBy={setOrderBy} setOrderDirection={setOrderDirection} setHook={setHook} />
+        </>
+      }*/
+    />
     //) : (
     //<View style={styles.container}/>
     //)

@@ -91,11 +91,9 @@ function getSuffix(number) {
 
 const RepositoryItem = ( props ) => {
 
-	console.log('RepositoryItem', props)
+	// console.log('RepositoryItem', props)
 
 	const { id, fullName, description, language, forksCount, stargazersCount, ratingAverage, reviewCount, ownerAvatarUrl, url, reviews, hasButton } = props
-
-	console.log('RepositoryItem', props)
 
 	const forks = getSuffix(forksCount);
 
@@ -111,7 +109,7 @@ const RepositoryItem = ( props ) => {
 
 		const id = param.id;
 
-		console.log('onViewRepositoryItem', id);
+		// console.log('onViewRepositoryItem', id);
 
 		history.push(`/repository/${id}`);
 
@@ -125,7 +123,8 @@ const RepositoryItem = ( props ) => {
   	};
 
   	if(reviews) {
-  		console.log('reviews', reviews);
+
+  		// console.log('reviews', reviews);
   	}
 
 	return (

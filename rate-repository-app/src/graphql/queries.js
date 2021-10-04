@@ -29,6 +29,7 @@ export const GET_REPOSITORIES = gql`
           url
           ownerAvatarUrl
           language
+          createdAt
         }
       } 
     }
@@ -67,23 +68,9 @@ export const GET_REPOSITORY = gql`
   }
 `;
 
-export const GET_AUTHORIZATION = gql`
-  {
-    authorizedUser {
-      id
-      username
-    }
-  }
-`;
-
-export default {
-  GET_REPOSITORIES,
-  GET_REPOSITORY,
-  GET_AUTHORIZATION
-};
-
-/* query {
-    repositories(orderBy:RATING_AVERAGE, orderDirection:ASC) {
+export const SEARCH_REPOSITORIES = gql`
+  query repositories($searchKeyword: String!) {
+    repositories(searchKeyword:$searchKeyword) {
       edges {
         node {
           id
@@ -97,14 +84,30 @@ export default {
           url
           ownerAvatarUrl
           language
+          createdAt
         }
       } 
     }
   }
-*/
+`;
 
-/*
-query {
+export const GET_AUTHORIZATION = gql`
+  {
+    authorizedUser {
+      id
+      username
+    }
+  }
+`;
+
+export default {
+  GET_REPOSITORIES,
+  GET_REPOSITORY,
+  SEARCH_REPOSITORIES,
+  GET_AUTHORIZATION
+};
+
+/* query {
     repositories(orderBy:CREATED_AT, orderDirection:ASC) {
       edges {
         node {
@@ -119,28 +122,7 @@ query {
           url
           ownerAvatarUrl
           language
-        }
-      } 
-    }
-  }
-*/
-
-/*
-query {
-    repositories(first:30) {
-      edges {
-        node {
-          id
-          name
-          fullName
-          description
-          ratingAverage
-          reviewCount
-          stargazersCount
-          forksCount
-          url
-          ownerAvatarUrl
-          language
+          createdAt
         }
       } 
     }
@@ -178,23 +160,3 @@ mutation {
   "Authorization": "Bearer <ACCESS_TOKEN>"
 }
 */
-
-/*
-{
-  "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI0N2ZlMTNlYS04YTJlLTQ3NjgtYjEyYS03YmQzNzg0MTNkM2YiLCJpYXQiOjE2MzI3Mjc2NjgsImV4cCI6MjIzNzUyNzY2OCwic3ViIjoiYWNjZXNzVG9rZW4ifQ.BDuWRwWAenRYl4BDmpKYke0vskptaRjb6f8IGNxNIGY"
-}
-*/
-
-/*
-{
-  "data": {
-    "authorizedUser": {
-      "id": "47fe13ea-8a2e-4768-b12a-7bd378413d3f",
-      "username": "elina"
-    }
-  }
-}
-*/
-
-
-
