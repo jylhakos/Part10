@@ -96,7 +96,7 @@ const SearchBar = ({ searchKeyword, setSearchKeyword, setHook }) => {
 
   }, [searchKeyword]);
 
-  const [value] = useDebounce(searchKeyword, 500);
+  // const [value] = useDebounce(searchKeyword, 500);
 
   const debounced = useDebouncedCallback(
 
