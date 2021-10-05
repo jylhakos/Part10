@@ -1,6 +1,6 @@
 // useRepositories
 
-import { useState, useEffect } from 'react';
+// import { useState, useEffect } from 'react';
 
 import { useQuery } from '@apollo/client';
 
@@ -8,58 +8,34 @@ import { useQuery } from '@apollo/client';
 
 import { GET_AUTHORIZATION, GET_REPOSITORIES } from '../graphql/queries';
 
-const useRepositories = () => {
+const useRepositories = (variables) => {
 
-	// 10.11
-	const [repositories, setRepositories] = useState();
+	console.log('useRepositories', variables);
 
-	const [loading, setLoading] = useState(false);
+	const { loading, data, fetchMore, ...result } = useQuery(GET_REPOSITORIES, { variables: variables, fetchPolicy: 'cache-and-network'} );
 
-	const uri = 'http://192.168.31.179:5000/api/repositories';
+	const handleFetchMore = () => {
 
-	const fetchRepositories = async () => {
+	    const canFetchMore = !loading && data?.repositories.pageInfo.hasNextPage;
 
-		setLoading(true);
-
-	    const response = await fetch(uri);
-	    
-	    const json = await response.json();
-
-	    console.log(json);
-
-	    setLoading(false);
-
-	    console.log(data);
-
-	    setRepositories(data);
-	};
-
-	const getRepositories = async (variables) => {
-
-	  	// console.log('getRepositores', variables);
-
-	  	const { loading, error, data } = await useQuery(GET_REPOSITORIES, { variables: variables, fetchPolicy: 'cache-and-network'} );
-
-	  	//const { loading, error, data } = await useQuery(GET_REPOSITORIES, { variables: {orderBy: AllRepositoriesOrderBy.RATING_AVERAGE, orderDirection: OrderDirection.DESC}, fetchPolicy: 'cache-and-network'} );
-
-	    // console.log('GET_REPOSITORIES', loading, error, data);
-
-	    if (data && data.repositories) {
-
-	    	// console.log('data.repositories', data);
-
-	    	return data.repositories;
+	    if (!canFetchMore) {
+	      return;
 	    }
-  };
- 
-// 10.11
-//useEffect(() => {
-//	fetchRepositories();
-//}, []);
 
-//return { repositories, loading, refetch: fetchRepositories };
+	    fetchMore({
+	      variables: {
+	        after: data.repositories.pageInfo.endCursor,
+	        ...variables,
+	      },
+	    });
+  	};
 
-return [getRepositories];
+	return {
+    	repositories: data?.repositories,
+    	fetchMore: handleFetchMore,
+    	loading,
+    	...result,
+  	};
 
 };
 

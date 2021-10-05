@@ -8,11 +8,11 @@ const useSearchQuery = () => {
 
 	// console.log('useSearch')
 
-	const searchRepositoryQuery = async ( keyword ) => {
+	const searchRepositoryQuery = async ( variables ) => {
 
 		// console.log('searchQuery', keyword)
 
-		const { loading, error, data } = await useQuery(SEARCH_REPOSITORIES, { variables: { searchKeyword: keyword }});
+		const { loading, error, data } = await useQuery(SEARCH_REPOSITORIES, { variables: variables });
 
   		// console.log('SEARCH_REPOSITORIES', loading, error, data);
 

@@ -11,11 +11,57 @@ export const typeDefs = gql`
       ASC
       DESC
   }
+
+  type Review {
+    id: ID!
+    user: User!
+    repository: Repository!
+    userId: String!
+    repositoryId: String!
+    rating: Int!
+    createdAt: DateTime!
+    text: String
+  }
+  type PageInfo {
+    hasPreviousPage: Boolean!
+    hasNextPage: Boolean!
+    startCursor: String
+    endCursor: String
+  }
+  type ReviewEdge {
+    cursor: String!
+    node: Review!
+  }
+  type ReviewConnection {
+    totalCount: Int!
+    pageInfo: PageInfo!
+    edges: [ReviewEdge!]!
+  }
+  type Repository {
+    id: ID!
+    ownerName: String!
+    name: String!
+    user: User!
+    createdAt: DateTime!
+    fullName: String!
+    reviews(first: Int, after: String): ReviewConnection!
+    ratingAverage: Int!
+    reviewCount: Int!
+    stargazersCount: Int
+    watchersCount: Int
+    forksCount: Int
+    openIssuesCount: Int
+    url: String
+    ownerAvatarUrl: String
+    description: String
+    language: String
+    authorizedUserHasReviewed: Boolean
+  }
 `;
 
 export const GET_REPOSITORIES = gql`
-  query repositories($orderBy:AllRepositoriesOrderBy, $orderDirection:OrderDirection) {
-    repositories(orderBy:$orderBy, orderDirection:$orderDirection) {
+  query repositories($first: Int, $after: String, $searchKeyword: String, $orderBy:AllRepositoriesOrderBy, $orderDirection:OrderDirection) {
+    repositories(first:$first, after:$after, searchKeyword:$searchKeyword, orderBy:$orderBy, orderDirection:$orderDirection) {
       edges {
         node {
           id
@@ -31,13 +77,19 @@ export const GET_REPOSITORIES = gql`
           language
           createdAt
         }
+        cursor
+      }
+      pageInfo {
+        endCursor
+        startCursor
+        hasNextPage
       } 
     }
   }
 `;
 
 export const GET_REPOSITORY = gql`
-  query repository($id: ID!) {
+  query Repository($id: ID!) {
     repository(id: $id) {
       id
       name
@@ -68,7 +120,23 @@ export const GET_REPOSITORY = gql`
   }
 `;
 
-export const SEARCH_REPOSITORIES = gql`
+export const GET_AUTHORIZATION = gql`
+  {
+    authorizedUser {
+      id
+      username
+    }
+  }
+`;
+
+export default {
+  GET_REPOSITORIES,
+  GET_REPOSITORY,
+  //SEARCH_REPOSITORIES,
+  GET_AUTHORIZATION
+};
+
+/*export const SEARCH_REPOSITORIES = gql`
   query repositories($searchKeyword: String!) {
     repositories(searchKeyword:$searchKeyword) {
       edges {
@@ -90,22 +158,8 @@ export const SEARCH_REPOSITORIES = gql`
     }
   }
 `;
+*/
 
-export const GET_AUTHORIZATION = gql`
-  {
-    authorizedUser {
-      id
-      username
-    }
-  }
-`;
-
-export default {
-  GET_REPOSITORIES,
-  GET_REPOSITORY,
-  SEARCH_REPOSITORIES,
-  GET_AUTHORIZATION
-};
 
 /* query {
     repositories(orderBy:CREATED_AT, orderDirection:ASC) {

@@ -28,7 +28,7 @@ import Text from './Text';
 
 import { Searchbar } from 'react-native-paper';
 
-import useSearchQuery from '../hooks/useSearchQuery';
+// import useSearchQuery from '../hooks/useSearchQuery';
 
 // $ npm install use-debounce --save
 
@@ -81,8 +81,7 @@ function authorizedSignIn() {
   return data;
 }
 
-
-const SearchBar = ({ searchKeyword, setSearchKeyword, setHook }) => {
+const SearchBar = ({ searchKeyword, setSearchKeyword }) => {
 
   const input = useRef(null);
 
@@ -104,10 +103,10 @@ const SearchBar = ({ searchKeyword, setSearchKeyword, setHook }) => {
 
       setSearchKeyword(value);
 
-      setHook('search');
+      //setHook('search');
     },
 
-    500
+    250
 
   );
 
@@ -156,9 +155,9 @@ const RepositoryOrder = ({ selectOrder, setSelectOrder, setOrderBy, setOrderDire
         <View style={{paddingTop: 5, paddingBottom: 5, paddingLeft: 20, paddingRight: 20 }}>
           <Picker 
             style={styles.picker}
-            showTickIcon={false}
+            showtickicon="false"
             selectedValue={selectOrder}
-            onValueChange={(value, index) => {setSelectOrder(value); selectState(value); setHook('query') }}
+            onValueChange={(value, index) => {setSelectOrder(value); selectState(value); }}
           >
           <Picker.Item label="Latest repositories" value={PickerOrder.LATEST} />
           <Picker.Item label="Highest rated repositories" value={PickerOrder.HIGHEST} />
@@ -169,26 +168,54 @@ const RepositoryOrder = ({ selectOrder, setSelectOrder, setOrderBy, setOrderDire
     )
 };
 
+export const RepositoryListContainer = ({repositories, searchKeyword, setSearchKeyword, selectOrder, setSelectOrder, setOrderBy, setOrderDirection, onEndReached }) => {
+  
+  const repositoryNodes = (repositories && repositories.edges) ? repositories.edges.map((edge) => edge.node) : [];
+
+  console.log('repositoryNodes', repositoryNodes);
+
+  const renderItem = ({ item }) => (
+    
+  <RepositoryItem 
+      id={item.id}
+      fullName={item.fullName} 
+      description={item.description}
+      language={item.language}
+      forksCount={item.forksCount}
+      stargazersCount={item.stargazersCount}
+      ratingAverage={item.ratingAverage}
+      reviewCount={item.reviewCount}
+      ownerAvatarUrl={item.ownerAvatarUrl}
+      url={item.url}
+      hasButton={false}/>
+    
+  );
+
+  return (
+    <FlatList
+      data={repositoryNodes}
+      ItemSeparatorComponent={ItemSeparator}
+      renderItem={renderItem}
+      keyExtractor={item => item.id}
+      ListHeaderComponent={() => 
+        <>
+        <SearchBar searchKeyword={searchKeyword} setSearchKeyword={setSearchKeyword} />
+        <RepositoryOrder selectOrder={selectOrder} setSelectOrder={setSelectOrder} setOrderBy={setOrderBy} setOrderDirection={setOrderDirection} />
+        </>
+      }
+      onEndReached={onEndReached}
+      onEndReachedThreshold={0.5}
+   
+    />
+  );
+};
+
+
 const RepositoryList = () => {
-
-  // 10.1
-  // const { repositories } = useRepositories();
-
-  // const authorized = authorizedSignIn();
-
-  // console.log('GET_AUTHORIZATION', authorized);
-
-  const [hook, setHook] = useState('query');
-
-  const [getRepositories] = useRepositories();
-
-  const [repositories, setRepositories] = useState(null);
-
-  let nodes = [];
 
   const [searchKeyword, setSearchKeyword] = useState('');
 
-  const [searchRepositoryQuery] = useSearchQuery();
+  //const [searchRepositoryQuery] = useSearchQuery();
 
   const [orderBy, setOrderBy] = useState(AllRepositoriesOrderBy.CREATED_AT);
 
@@ -196,123 +223,36 @@ const RepositoryList = () => {
 
   const [selectOrder, setSelectOrder] = useState("latest");
 
-  // console.log('orderBy', orderBy, 'orderDirection', orderDirection, 'selectOrder', selectOrder);
+  console.log('query', searchKeyword, orderBy, orderDirection);
 
-  //const [value] = useDebounce(searchKeyword, 500);
+  const variables = {first: 8, searchKeyword: searchKeyword, orderBy: orderBy, orderDirection: orderDirection};
 
-  /*const debounced = useDebouncedCallback(
+  const { repositories, fetchMore } = useRepositories(variables);
 
-    (value) => {
+  console.log('query', repositories, variables, fetchMore);
 
-      setSearchKeyword(value);
+  const onEndReach = () => {
 
-      setHook('search');
-    },
-
-    250
-
-  );*/
-
-  ///const onChangeSearch = (value) => { debounced(value) };
-
-  const searchRepositories = async () => {
-
-    // console.log('searchRepositories', searchKeyword);
-
-    const data = await searchRepositoryQuery(searchKeyword);
-
-    if (data) {
-
-        // console.log('searchQuery', data);
-
-        setRepositories(data);
-    }
-
+    fetchMore();
   };
 
-  const queryRepositories = async () => {
-
-    // console.log('queryRepositories', orderBy, orderDirection);
-
-    const variables = {orderBy: orderBy, orderDirection: orderDirection};
-
-    const data = await getRepositories(variables);
-
-    if (data) {
-
-        // console.log('queryRepositories', data);
-
-        setRepositories(data);
-    }
-  };
-
-  if (hook === 'search') {
-
-    // console.log('SEARCH');
-
-    searchRepositories();
-
-  }
-  else {
-
-    // console.log('QUERY');
-
-    queryRepositories();
-  }
-
-  if(repositories && repositories.edges) {
-
-    nodes = repositories ? repositories.edges.map(edge => edge.node) : [];
-
-    // console.log('nodes', nodes)
-
-  }
-
-	// console.log('RepositoryList');
-
-	const renderItem = ({ item }) => (
-    
-	<RepositoryItem 
-      id={item.id}
-      fullName={item.fullName} 
-			description={item.description}
-			language={item.language}
-			forksCount={item.forksCount}
-			stargazersCount={item.stargazersCount}
-			ratingAverage={item.ratingAverage}
-			reviewCount={item.reviewCount}
-      ownerAvatarUrl={item.ownerAvatarUrl}
-      url={item.url}
-      hasButton={false}/>
-    
-	);
+  
+  console.log('repositories', repositories);
 
 	return (
-    //(authorized && authorized.authorizedUser) ? (
-		<FlatList
-  		data={nodes}
-  		ItemSeparatorComponent={ItemSeparator}
-  		renderItem={renderItem}
-  		keyExtractor={item => item.id}
-      ListHeaderComponent={() => <><SearchBar searchKeyword={searchKeyword} setSearchKeyword={setSearchKeyword} setHook={setHook}/> <RepositoryOrder selectOrder={selectOrder} setSelectOrder={setSelectOrder} setOrderBy={setOrderBy} setOrderDirection={setOrderDirection} setHook={setHook} /></>}
-  		/*ListHeaderComponent={() => 
-        <> 
-        <View style={{paddingTop: 15, paddingBottom: 5, paddingLeft: 25, paddingRight: 25 }}>
-        <Searchbar
-          key={"searchbar"}
-          autoFocus={false}
-          placeholder="Search"
-          onChangeText={onChangeSearch}
-          value={searchKeyword}
-        />
-        </View> 
-        <RepositoryOrder selectOrder={selectOrder} setSelectOrder={setSelectOrder} setOrderBy={setOrderBy} setOrderDirection={setOrderDirection} setHook={setHook} />
-        </>
-      }*/
+    (repositories) ? (
+    <RepositoryListContainer
+      repositories={repositories}
+      searchKeyword={searchKeyword} 
+      setSearchKeyword={setSearchKeyword}
+      selectOrder={selectOrder} 
+      setSelectOrder={setSelectOrder} 
+      setOrderBy={setOrderBy} 
+      setOrderDirection={setOrderDirection}
+      onEndReach={onEndReach}
     />
-    //) : (
-    //<View style={styles.container}/>
-    //)
+    ) : null
+ 
 	);
 };
 

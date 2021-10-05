@@ -126,32 +126,7 @@ const ReviewItem = ({ review }) => {
   	);
 };
 
-const RepositoryItemView = () => {
-
-	const [repository, setRepository] = useState(null);
-
-	const [repositoryQuery] = useRepository();
-
-	const { id } = useParams();
-
-	console.log('RepositoryItemView', id);
-
-	const getQuery = async () => {
-
-		console.log('getQuery', id)
-
-		const data = await repositoryQuery({ id });
-
-		if (data) {
-
-    		console.log('getQuery', data);
-
-   			setRepository(data);
-
-   		}
-   	}
-
-	getQuery();
+export const RepositoryItemContainer = ({repository, onEndReached }) => {
 
 	let reviews = []
 
@@ -163,14 +138,46 @@ const RepositoryItemView = () => {
 
 	}
 
+	return (
+    
+		<FlatList
+			data={reviews}
+			renderItem={({ item }) => <ReviewItem review={item} />}
+			keyExtractor={({ id }) => id}
+			ItemSeparatorComponent={ItemSeparator}
+			ListHeaderComponent={() => <RepositoryInfo repository={repository} />}
+	      	onEndReached={onEndReached}
+	      	onEndReachedThreshold={0.5}
+	   
+	    />
+  );
+};
+  
+
+const RepositoryItemView = () => {
+
+	const { id } = useParams();
+
+	console.log('RepositoryItemView', id);
+
+  	const variables = {first: 8, id: id};
+
+  	const { repository, fetchMore } = useRepository(variables);
+
+  	console.log('RepositoryItemView', repository, variables, fetchMore);
+
+  	const onEndReach = () => {
+
+    	fetchMore();
+  	};
+
+	console.log('repository', repository);
+
   	return (
   		(repository) ? (
-		    <FlatList
-		      data={reviews}
-		      renderItem={({ item }) => <ReviewItem review={item} />}
-		      keyExtractor={({ id }) => id}
-		      ItemSeparatorComponent={ItemSeparator}
-		      ListHeaderComponent={() => <RepositoryInfo repository={repository} />}
+  			<RepositoryItemContainer
+      			repository={repository}
+		     	onEndReach={onEndReach}
 		    />
 	    ) : null
 	 );
