@@ -80,8 +80,8 @@ export const GET_REPOSITORIES = gql`
         cursor
       }
       pageInfo {
-        endCursor
         startCursor
+        endCursor
         hasNextPage
       } 
     }
@@ -89,7 +89,7 @@ export const GET_REPOSITORIES = gql`
 `;
 
 export const GET_REPOSITORY = gql`
-  query Repository($id: ID!) {
+  query Repository($id: ID!, $first: Int, $after: String) {
     repository(id: $id) {
       id
       name
@@ -102,7 +102,8 @@ export const GET_REPOSITORY = gql`
       url
       ownerAvatarUrl
       language
-      reviews {
+      reviews(first: $first, after: $after) {
+        totalCount
         edges {
           node {
             id
@@ -114,6 +115,12 @@ export const GET_REPOSITORY = gql`
               username
             }
           }
+          cursor
+        }
+        pageInfo {
+          startCursor
+          endCursor
+          hasNextPage
         }
       }
     }

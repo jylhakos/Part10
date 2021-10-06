@@ -103,7 +103,6 @@ const SearchBar = ({ searchKeyword, setSearchKeyword }) => {
 
       setSearchKeyword(value);
 
-      //setHook('search');
     },
 
     250
@@ -172,7 +171,7 @@ export const RepositoryListContainer = ({repositories, searchKeyword, setSearchK
   
   const repositoryNodes = (repositories && repositories.edges) ? repositories.edges.map((edge) => edge.node) : [];
 
-  console.log('repositoryNodes', repositoryNodes);
+  // console.log('repositoryNodes', repositoryNodes);
 
   const renderItem = ({ item }) => (
     
@@ -205,7 +204,6 @@ export const RepositoryListContainer = ({repositories, searchKeyword, setSearchK
       }
       onEndReached={onEndReached}
       onEndReachedThreshold={0.5}
-   
     />
   );
 };
@@ -215,29 +213,27 @@ const RepositoryList = () => {
 
   const [searchKeyword, setSearchKeyword] = useState('');
 
-  //const [searchRepositoryQuery] = useSearchQuery();
-
   const [orderBy, setOrderBy] = useState(AllRepositoriesOrderBy.CREATED_AT);
 
   const [orderDirection, setOrderDirection] = useState(OrderDirection.DESC);
 
   const [selectOrder, setSelectOrder] = useState("latest");
 
-  console.log('query', searchKeyword, orderBy, orderDirection);
+  // console.log('RepositoryList', searchKeyword, orderBy, orderDirection);
 
-  const variables = {first: 8, searchKeyword: searchKeyword, orderBy: orderBy, orderDirection: orderDirection};
+  const variables = {first: 5, searchKeyword: searchKeyword, orderBy: orderBy, orderDirection: orderDirection};
 
   const { repositories, fetchMore } = useRepositories(variables);
 
-  console.log('query', repositories, variables, fetchMore);
+  // console.log('RepositoryList', repositories, variables, fetchMore);
 
-  const onEndReach = () => {
+  const onEndReached = () => {
+
+    // console.log('RepositoryList: onEndReached');
 
     fetchMore();
-  };
 
-  
-  console.log('repositories', repositories);
+  };
 
 	return (
     (repositories) ? (
@@ -249,7 +245,7 @@ const RepositoryList = () => {
       setSelectOrder={setSelectOrder} 
       setOrderBy={setOrderBy} 
       setOrderDirection={setOrderDirection}
-      onEndReach={onEndReach}
+      onEndReached={onEndReached}
     />
     ) : null
  

@@ -11,21 +11,21 @@ const useReview = () => {
 
 	const review = async ({ repositoryName, ownerName, rating, text }) => {
 
-		console.log('review', repositoryName, ownerName, rating, text);
+		// console.log('review', repositoryName, ownerName, rating, text);
 
 		const data = await mutate({ variables: { repositoryName: repositoryName, ownerName: ownerName, rating: rating, text: text }});
 
-		if (data) {
+		//if (data) {
 
-			console.log('data', data);
+			// console.log('data', data);
 
-		}
+		//}
 
 		return data;
 
 	};
 
-	console.log('return', result);
+	// console.log('return', result);
 
 	return [review, result];
 }

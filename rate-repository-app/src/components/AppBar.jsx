@@ -42,13 +42,13 @@ const AppBar = () => {
 
 	const { loading, error, data } = useQuery(GET_AUTHORIZATION);
 
-	console.log('AppBar', data);
+	// console.log('AppBar', data);
 
-	if (data) {
+	//if (data) {
 
-		console.log('authorizedUser', data.authorizedUser);
+		//console.log('authorizedUser', data.authorizedUser);
 
-	}
+	//}
 
 	return (
 

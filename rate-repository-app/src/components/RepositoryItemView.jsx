@@ -89,11 +89,11 @@ const RepositoryInfo = ({ repository }) => {
 
 const ReviewItem = ({ review }) => {
 
-  	console.log('review', review, 'review.createdAt', review.createdAt);
+  	//console.log('review', review, 'review.createdAt', review.createdAt);
 
   	const date = parseISO(review.createdAt);
 
-	console.log('date', date);
+	//console.log('date', date);
 
 	const year = date.getUTCFullYear();
 
@@ -132,7 +132,7 @@ export const RepositoryItemContainer = ({repository, onEndReached }) => {
 
 	if(repository && repository.reviews) {
 
-		console.log('repository.reviews', repository.reviews);
+		//console.log('repository.reviews', repository.reviews);
 
 		reviews = repository.reviews ? repository.reviews.edges.map(edge => edge.node) : [];
 
@@ -158,26 +158,28 @@ const RepositoryItemView = () => {
 
 	const { id } = useParams();
 
-	console.log('RepositoryItemView', id);
+	//console.log('RepositoryItemView', id);
 
-  	const variables = {first: 8, id: id};
+  	const variables = {first: 3, id: id};
 
   	const { repository, fetchMore } = useRepository(variables);
 
-  	console.log('RepositoryItemView', repository, variables, fetchMore);
+  	//console.log('RepositoryItemView', repository, variables, fetchMore);
 
-  	const onEndReach = () => {
+  	const onEndReached = () => {
+
+  		//console.log('RepositoryItemView: onEndReached')
 
     	fetchMore();
   	};
 
-	console.log('repository', repository);
+	//console.log('repository', repository);
 
   	return (
   		(repository) ? (
   			<RepositoryItemContainer
       			repository={repository}
-		     	onEndReach={onEndReach}
+		     	onEndReached={onEndReached}
 		    />
 	    ) : null
 	 );

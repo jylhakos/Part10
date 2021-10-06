@@ -10,7 +10,7 @@ import { GET_AUTHORIZATION, GET_REPOSITORIES } from '../graphql/queries';
 
 const useRepositories = (variables) => {
 
-	console.log('useRepositories', variables);
+	// console.log('useRepositories', variables);
 
 	const { loading, data, fetchMore, ...result } = useQuery(GET_REPOSITORIES, { variables: variables, fetchPolicy: 'cache-and-network'} );
 
@@ -18,7 +18,10 @@ const useRepositories = (variables) => {
 
 	    const canFetchMore = !loading && data?.repositories.pageInfo.hasNextPage;
 
+	    // console.log('handleFetchMore', canFetchMore, data);
+
 	    if (!canFetchMore) {
+
 	      return;
 	    }
 
